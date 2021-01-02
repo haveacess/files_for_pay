@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>Загрузка файла</title>
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w==" crossorigin="anonymous" />
+
+	<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+
+	<style type="text/css">
+		.background {
+			object-fit: cover;
+  			width: 100vw;
+  			height: 100vh;
+  			position: fixed;
+  			top: 0;
+  			left: 0;
+		}
+
+		.form {
+			margin-top: 5%;
+
+
+		}
+
+		.heart {
+		  color: #fff;
+		  animation-timing-function: ease-in-out;
+		  animation-duration: 1s;
+		  animation-name: heartbeat;
+		  animation-iteration-count: infinite;
+		}
+
+		@keyframes heartbeat {
+		  0% {
+		    transform: scale(.75);
+		  }
+
+		  20% {
+		    transform: scale(1);
+		  }
+
+		  40% {
+		    transform: scale(.75);
+		  }
+
+		  60% {
+		    transform: scale(1);
+		  }
+
+		  80% {
+		    transform: scale(.75);
+		  }
+
+		  to {
+		    transform: scale(.75);
+		  }
+		}
+	</style>
+
+</head>
+<body>
+
+	<video autoplay muted loop class="background">
+	  <source src="bg3.mp4" type="video/mp4">
+	</video>
+
+	<form class="form" onsubmit="return false;">
+	  <div class="form-group col-md-6 mx-auto">
+
+	  	<div class="alert bg-light text-dark rounded-0" role="alert" style="margin-top: 5px">
+		  Для скачивания этого файла необходимо внести мин. сумму (от 0.1$), а затем нажать кнопку "Перейти к оплате". В новой вкладке откроется ссылка для оплаты, а с этой страницы начнется скачиваение файла. Спасибо за поддержку!
+		</div>
+
+	  	<div class="input-group"  style="margin-bottom: 15px">
+	  		<label class="col-form-label text-white" style="margin-right: 5px">Сумма</label>
+
+	  		<input type="text" class="form-control" name="amount" id="amount" placeholder="Число больше 0.1" onchange="validAmount($(this))">
+	  		<!-- приблизительно в рублях иначе красным сумма должна быть больше 0.1 и кнопка отправить не активна -->
+
+			<div class="input-group-append">
+		       <div class="input-group-text">$</div>
+		    </div>
+
+		    <button type="button" class="btn bg-dark text-white rounded-0" style="margin-left: 5px" onclick="$('#amount').val((getRandomArbitrary(1, 10) / 10).toFixed(2)); validAmount($('#amount'));">RANDOM</button>
+
+		     <div class="invalid-feedback">
+	          Пожалуйста введите число больше 0.1
+	         </div>
+
+	  	</div>
+
+	  	
+	   
+
+	   
+
+	   
+	  <button type="button" class="btn bg-dark text-white rounded-0" id="goPay" disabled="" onclick="createInvoice();">
+	  	<i class="fa fa-heart heart"></i>
+	  	Перейти к оплате
+   	  </button>
+	</form>
+
+	<script type="text/javascript">
+
+		var service_uri = 'http://haveacess.beget.tech/api.php';
+		var download_uri = window.location.href + 'download.html';
+		var ip_address; //set ip here
+
+		window.onload = function() {
+			//get ip and set in variable
+			$.get("https://api.ipify.org/?format=json", function(response) {
+			  ip_address = response.ip;
+
+			  let data = JSON.stringify({ product: "itunes", ip: ip_address});
+			  //send hint
+			  $.post(service_uri, {'action': 'hint', data: data}, function(response) {
+			  	console.log('hint response: ', response);
+			  });
+
+			});
+
+			
+		}
+
+		function validAmount(e) {
+
+			let val = e.val().replace(',', '.');
+			e.val(val);
+			//console.log(val < 0.1);
+
+			if (val < 0.1) {
+				e.addClass('is-invalid'); e.removeClass('is-valid'); 
+				$('#goPay').attr('disabled', true);
+				$('#goPay').find('.heart').css('color', '#fff'); //primary color
+				return;
+			}
+
+			e.removeClass('is-invalid'); e.addClass('is-valid'); 
+			$('#goPay').attr('disabled', false);
+			$('#goPay').find('.heart').css('color', '#eb5e28'); //second color
+
+		}
+
+		function getRandomArbitrary(min, max) {
+		  return Math.random() * (max - min) + min;
+		}
+
+		function createInvoice() {
+			$('#goPay').attr('disabled', true);
+
+			let amount = $('#amount').val();		
+			//data need to serealize
+			//create invoice and window.location uri open
+			//+ disable button (and enable after response)
+			let data = JSON.stringify({product: "itunes", ip: ip_address, price: $('#amount').val()  });
+		  	//send hint
+			$.post(service_uri, {'action': 'invoice.create', data: data}, function(response) {
+				$('#goPay').attr('disabled', false);
+				console.log('invoice.create response: ', response);
+				let status = JSON.parse(response);
+
+			  	if (status.ok == true) {
+			  		//new blank
+			  		let link = document.createElementNS("http://www.w3.org/1999/xhtml", "a");
+				    link.href = status.invoice;
+				    link.target = '_blank';
+				    link.click(); //emulate click
+
+				    //find invoice_id in link
+				    let decomposeLink = new URL(status.invoice);
+				    let invoice_id = decomposeLink.searchParams.get('billId');
+    
+			  		window.location.href = download_uri + '?invoice_id=' + invoice_id;
+			  	}
+			});
+
+
+		}
+
+	</script>
+</body>
+</html>
