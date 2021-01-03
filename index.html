@@ -162,7 +162,7 @@
 			//data need to serealize
 			//create invoice and window.location uri open
 			//+ disable button (and enable after response)
-			let data = JSON.stringify({product: "itunes", ip: ip_address, price: $('#amount').val()  });
+			let data = JSON.stringify({id_product: 1, ip: ip_address, price: $('#amount').val()  });
 		  	//send hint
 			$.post(service_uri, {'action': 'invoice.create', data: data}, function(response) {
 				$('#goPay').attr('disabled', false);
