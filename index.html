@@ -117,6 +117,9 @@
 		var ip_address; //set ip here
 
 		window.onload = function() {
+			document.write('Технические работы. Сайт временно не доступен. Приносим извинения за возможные неудобства');
+			return;
+			
 			//get ip and set in variable
 			$.get("https://api.ipify.org/?format=json", function(response) {
 			  ip_address = response.ip;
