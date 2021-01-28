@@ -24,6 +24,8 @@
   			position: fixed;
   			top: 0;
   			left: 0;
+
+            background: #4c4c4c;
 		}
 
 		.form {
@@ -48,94 +50,64 @@
 
 
 <video autoplay muted loop class="background">
-  <source src="bg3.mp4" type="video/mp4">
+  <source src="bg.mp4" type="video/mp4">
 </video>
 
-<div class="background">
-	<div class="waitingPay text-white mx-auto">
-		  <div id="orderId" class="alert alert-warning mx-auto" role="alert" style="max-width: 500px;" data-template="Ваш номер заказа: %s"> 
-		  	
-		  </div>
+<div class="waitingPay text-white mx-auto">
+	  <div id="orderId" class="alert alert-warning mx-auto" role="alert" style="max-width: 500px;" data-template="Ваш номер заказа: %s"> 
+	  	
+	  </div>
 
-		  <div class="form-group statusPay">
-			  <div class="spinner-border mx-auto" role="status" aria-hidden="true"></div>
-			  <strong>Проверяем вашу оплату. Как только заказ будет оплачен вы будете перенаправлены на страницу загрузки</strong>
+	  <div class="form-group statusPay">
+		  <div class="spinner-border mx-auto" role="status" aria-hidden="true"></div>
+		  <strong>Проверяем вашу оплату. Как только заказ будет оплачен вы будете перенаправлены на страницу загрузки</strong>
 
-			  <div class="alert bg-light text-dark rounded-0" role="alert" style="margin-top: 5px">
-			  	Если в течении 3 минут после оплаты вы все еще видите эту надпись пожалуйста напишите нам на почту <strong class="text-dark">haveacess@gmail.com</strong> и укажите <strong>свой номер заказа.</strong> Как правило мы отвечаем в течении 24 часов
-			  </div>
+		  <div class="alert bg-light text-dark rounded-0" role="alert" style="margin-top: 5px">
+		  	Если в течении 3 минут после оплаты вы все еще видите эту надпись пожалуйста напишите нам на почту <strong class="text-dark">haveacess@gmail.com</strong> и укажите <strong>свой номер заказа.</strong> Как правило мы отвечаем в течении 24 часов
 		  </div>
-	</div>
+	  </div>
 </div>
 
 <script type="text/javascript">
-	//Инфоис получаем из гет запроса. Устанавливаем при помощи темплате как айди заказа
-	//Чекаем инфоис - и если валиден - открываем ссылку довнлоад URL (не забывать парсить)
 
 	window.onload = function() {
 
 		var service_uri = 'https://filesforpay.space/api.php';
 		let decomposeLink = new URL(window.location.href);
-		var invoice_id = decomposeLink.searchParams.get('invoice_id');
-		console.log('invoice_id: ', invoice_id);
+		var id_order = decomposeLink.searchParams.get('id_order');
 
-		if (!invoice_id) {
+		if (!id_order) {
 			//set no detected order
 			$('#orderId').html('Не найден ваш заказ. Если вы уже оплатили: просьба отправить чек об оплате нам на почту: <strong>haveacess@gmail.com</strong>');
 			$('.waitingPay').find('.statusPay').addClass('d-none');
 			return; //say bye bye
 		}
 
-		if (invoice_id) {
+		if (id_order) {
 			//set order number
 			let template = $('#orderId').attr('data-template');
-			$('#orderId').html(template.replace('%s', invoice_id));
+			$('#orderId').html(template.replace('%s', id_order));
 		}
 
-		var invoice_ping = setInterval(function () {
+		var order_ping = setInterval(function () {
 
-			//if condition. . clearInterval(invoice_ping);
-
-			let data = JSON.stringify({id_invoice: invoice_id});
+			let data = JSON.stringify({id_order: id_order});
 			$.post(service_uri, {'action': 'file.download', data: data}, function(response) {
 
 				let info = JSON.parse(response);
 				console.log('pay status: ', info.ok);
 				
 				if (info.ok == true) {
-					clearInterval(invoice_ping); //stop ping
+					clearInterval(order_ping); //stop ping
 					window.location.href = info.download_link; //redirect to download file
 				}
 			});
 
 
-		}, 5000);
+		}, 3000);
 
 	}
 
-	
-
-	// let data = JSON.stringify({product: "itunes", ip: ip_address, price: $('#amount').val()  });
- //  	//send hint
-	// $.post(service_uri, {'action': 'invoice.create', data: data}, function(response) {
-	// 	$('#goPay').attr('disabled', false);
-	// 	console.log('invoice.create response: ', response);
-	// 	let status = JSON.parse(response);
-
-	//   	if (status.ok == true) {
-	//   		//new blank
-	//   		let link = document.createElementNS("http://www.w3.org/1999/xhtml", "a");
-	// 	    link.href = status.invoice;
-	// 	    link.target = '_blank';
-	// 	    link.click(); //emulate click
-
-	// 	    //find invoice_id in link
-	// 	    let decomposeLink = new URL(status.invoice);
-	// 	    let invoice_id = decomposeLink.searchParams.get('billId');
-
-	//   		window.location.href = download_uri + '?invoice_id=' + invoice_id;
-	//   	}
-	// });
 </script>
 
 </body>

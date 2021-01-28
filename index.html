@@ -11,9 +11,23 @@
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w==" crossorigin="anonymous" />
-
 	<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
+	<!-- Yandex.Metrika counter -->
+	<script type="text/javascript" >
+		(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+			m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+		(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+		ym(71596948, "init", {
+			clickmap:true,
+			trackLinks:true,
+			accurateTrackBounce:true,
+			webvisor:true
+		});
+	</script>
+	<noscript><div><img src="https://mc.yandex.ru/watch/71596948" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+	<!-- /Yandex.Metrika counter -->
 
 	<style type="text/css">
 		.background {
@@ -26,9 +40,7 @@
 		}
 
 		.form {
-			margin-top: 5%;
-
-
+			margin-top: 3%;
 		}
 
 		.heart {
@@ -38,6 +50,20 @@
 		  animation-name: heartbeat;
 		  animation-iteration-count: infinite;
 		}
+
+		.settings, .currency, .lang {
+			display: flex;
+		}
+
+		.settings > .currency {
+			margin-left: auto;
+			width: 40%;
+		}
+
+		.settings > .lang {
+			width: 40%;
+		}
+
 
 		@keyframes heartbeat {
 		  0% {
@@ -67,129 +93,363 @@
 	</style>
 
 </head>
-<body>
+<body style="color: #fff">
 
-	<video autoplay muted loop class="background">
-	  <source src="bg3.mp4" type="video/mp4">
-	</video>
+<!--	<div class="settings col-md-6 mx-auto" style="margin-top: 15px">-->
 
-	<form class="form" onsubmit="return false;">
-	  <div class="form-group col-md-6 mx-auto">
+<!--		<div class="lang">-->
+<!--			<label class="col-form-label" style="margin-right: 5px;">Язык</label>-->
+<!--			<select class="custom-select" style="border-radius: 0px;">-->
+<!--				<option value="1">English</option>-->
+<!--				<option value="2">Russian</option>-->
+<!--			</select>-->
+<!--		</div>-->
 
-	  	<div class="alert bg-light text-dark rounded-0" role="alert" style="margin-top: 5px">
-		  Для скачивания этого файла необходимо внести мин. сумму (от 0.1$), а затем нажать кнопку "Перейти к оплате". В новой вкладке откроется ссылка для оплаты, а с этой страницы начнется скачиваение файла. Спасибо за поддержку!
+
+<!--		<div class="currency">-->
+<!--			<label class="col-form-label" style="margin-right: 5px;">Валюта</label>-->
+<!--			<select class="custom-select" style="border-radius: 0px;">-->
+<!--				<option value="1">Israil</option>-->
+<!--			</select>-->
+<!--		</div>-->
+<!--	</div>-->
+
+<video autoplay muted loop class="background">
+  <source src="bg.mp4" type="video/mp4">
+</video>
+
+<form class="form" onsubmit="return false;">
+	<div class="form-group col-md-6 mx-auto">
+
+		<div class="alert bg-light text-dark rounded-0" role="alert" style="margin-top: 5px">
+		  Для скачивания этого файла необходимо внести мин. сумму (от 0.3$), а затем нажать кнопку "Перейти к оплате". Далее следуйте инструкциям, после оплаты Вы будете перенаправлены на страницу скачивания файла. Дополнительно ссылка на файл будет отправлена на вашу электронную почту.
 		</div>
 
-	  	<div class="input-group"  style="margin-bottom: 15px">
-	  		<label class="col-form-label text-white" style="margin-right: 5px">Сумма</label>
+		<div class="input-group" style="margin-bottom: 15px;">
+			<label class="col-form-label w-25" style="margin-right: 5px;">Продукт</label>
 
-	  		<input type="text" class="form-control" name="amount" id="amount" placeholder="Число больше 0.1" onchange="validAmount($(this))">
-	  		<!-- приблизительно в рублях иначе красным сумма должна быть больше 0.1 и кнопка отправить не активна -->
+			<select class="custom-select" style="border-radius: 0px;" id="choiseProduct">
+				<option value="1">iTunes для Windows 7</option>
+			</select>
+
+			<div class="w-100">
+				<small class="form-text">Выберите желаемый продукт</small>
+			</div>
+		</div>
+
+		<div class="input-group"  style="margin-bottom: 15px">
+			<label class="col-form-label w-25" style="margin-right: 5px;">Сумма</label>
+
+			<input type="text" class="form-control" name="amount" id="amount" placeholder="Число больше 0.3">
 
 			<div class="input-group-append">
-		       <div class="input-group-text">$</div>
-		    </div>
+			   <div class="input-group-text">$</div>
+			</div>
 
-		    <button type="button" class="btn bg-dark text-white rounded-0" style="margin-left: 5px" onclick="$('#amount').val((getRandomArbitrary(1, 10) / 10).toFixed(2)); validAmount($('#amount'));">RANDOM</button>
+			<button type="button" class="btn bg-dark text-white rounded-0" style="margin-left: 5px" id="rnd">RANDOM</button>
 
-		     <div class="invalid-feedback">
-	          Пожалуйста введите число больше 0.1
-	         </div>
+			 <div class="invalid-feedback">
+			  Пожалуйста введите число больше 0.3
+			 </div>
 
-	  	</div>
+			<div class="w-100">
+				<small class="form-text">Введите сумму которую готовы заплатить за скачивание файла</small>
+			</div>
+		</div>
 
-	  	
-	   
+		<div class="alert alert-warning d-none" id="courses" data-template="Сумма в вашей местной валюте %s USD ≈ %s">
+			Считаем сумму в вашей валюте..
+		</div>
 
-	   
+		<div class="input-group" style="margin-bottom: 15px;">
+			<label class="col-form-label w-25" style="margin-right: 5px;">Почта</label>
+			<input style="border-radius: 0;" class="form-control" name="email" type="email" id="email" placeholder="Ваша электронная почта">
+			<div class="w-100">
+				<small class="form-text">Продукт отправим на эту почту, а если платеж не пройдет будем знать от кого он</small>
+			</div>
 
-	   
-	  <button type="button" class="btn bg-dark text-white rounded-0" id="goPay" disabled="" onclick="createInvoice();">
-	  	<i class="fa fa-heart heart"></i>
-	  	Перейти к оплате
-   	  </button>
-	</form>
+			<div class="invalid-feedback">
+				Пожалуйста введите правильную почту
+			</div>
+		</div>
 
-	<script type="text/javascript">
+		<button type="submit" class="btn bg-dark text-white rounded-0" id="goPay" disabled="" onclick="createInvoice();">
+			<i class="fa fa-heart"></i>
+			Перейти к оплате
+		</button>
 
-		var service_uri = 'https://filesforpay.space/api.php';
-		var download_uri = window.location.href + 'download.html';
-		var ip_address; //set ip here
+	</div>
+</form>
 
-		window.onload = function() {
-			document.write('Технические работы. Сайт временно не доступен. Приносим извинения за возможные неудобства');
-			return;
-			
-			//get ip and set in variable
-			$.get("https://api.ipify.org/?format=json", function(response) {
-			  ip_address = response.ip;
+<script type="text/javascript">
 
-			  let data = JSON.stringify({ product: "itunes", ip: ip_address});
-			  //send hint
-			  $.post(service_uri, {'action': 'hint', data: data}, function(response) {
-			  	console.log('hint response: ', response);
-			  });
+	var service_uri = 'https://filesforpay.space/api.php';
 
-			});
+	var amountActive = false; //if input field of amount currently active
+	var last_rnd = false; //set true if button random is last active element
 
-			
-		}
+	var rates = null; //set rates after download courses
 
-		function validAmount(e) {
+	//if any variable was not received, then be is false
+	var user = {
+		country: false,
+		ip: false,
+		currency: false //detect by country
+	}
 
-			let val = e.val().replace(',', '.');
-			e.val(val);
-			//console.log(val < 0.1);
 
-			if (val < 0.1) {
-				e.addClass('is-invalid'); e.removeClass('is-valid'); 
-				$('#goPay').attr('disabled', true);
-				$('#goPay').find('.heart').css('color', '#fff'); //primary color
-				return;
+	window.onload = function() {
+
+		//events for element
+
+		$("#rnd").click(function() {
+
+			$('#amount').val((getRandomArbitrary(3, 10) / 10).toFixed(2));
+			validAmount();
+			convertAmount();
+
+		});
+
+
+		$("#amount").keyup(function() {
+			validAmount();
+			valid_fields(); //valid other fields
+			convertAmount();
+		});
+
+
+		$("#email").keyup(function() {
+			let el = $('#email');
+
+			if (!is_valid(el.val(), 'email')) {
+
+				el.addClass('is-invalid');
+				el.removeClass('is-valid');
+			}
+			else {
+				el.removeClass('is-invalid');
+				el.addClass('is-valid');
 			}
 
-			e.removeClass('is-invalid'); e.addClass('is-valid'); 
-			$('#goPay').attr('disabled', false);
-			$('#goPay').find('.heart').css('color', '#eb5e28'); //second color
+			valid_fields(); //valid other fields
 
+
+		});
+
+		// $("#amount" ).change(function() {
+		// 	valid_fields('amount');
+		// });
+
+		setInterval(function () {
+			amountActive = document.activeElement == document.getElementById('amount');
+			last_rnd =  document.activeElement == document.getElementById('rnd');
+
+			if (amountActive || last_rnd)
+				convertAmount();
+			else {
+				$('#courses').addClass('d-none');//hidden courses
+				last_rnd = false;
+			}
+
+
+		}, 300);
+
+		//get ip and set in variable
+
+		$.get("https://api.ipify.org/?format=json", function(response) {
+				user.ip = response.ip;
+
+		});
+
+		//get rates
+		$.get("https://api.exchangeratesapi.io/latest?base=USD", function(response) {
+			rates = response.rates;
+		});
+
+		//get country
+		$.get("http://ip-api.com/json/", function(response) {
+			if (response.status == 'success') {
+
+				user.country = response.country;
+
+				$.get("https://restcountries.eu/rest/v2/name/" + user.country, function(response) {
+					user.currency = response[0].currencies[0].code;
+				});
+			}
+
+
+		});
+
+
+		
+	}
+
+	function validAmount() {
+		let el = $('#amount');
+
+		if (!is_valid(el.val(), 'amount')) {
+
+			el.addClass('is-invalid');
+			el.removeClass('is-valid');
+		}
+		else {
+			el.removeClass('is-invalid');
+			el.addClass('is-valid');
 		}
 
-		function getRandomArbitrary(min, max) {
-		  return Math.random() * (max - min) + min;
+		valid_fields(); //valid other fields
+	}
+
+	function convertAmount() {
+		//return value || false
+		//or just set after response
+
+		let amount = $('#amount').val(); //get amount from field;
+		amount = amount.replace(',', '.');
+
+		if (!user.country)
+			return  false;
+
+
+		if (!user.currency)  //error convertation return
+			return false;
+
+		let amountConverted = CurrencyConvert('USD', user.currency, amount);
+
+		if (!amountConverted)
+			return  false;
+
+		$('#courses').removeClass('d-none');
+
+		//set amount converted
+		let text = $('#courses').attr('data-template');
+		text = text.replace('%s', $('#amount').val());
+		text = text.replace('%s', amountConverted + ' ' + user.currency);
+		//console.log(text);
+		$('#courses').html(text);
+	}
+
+
+
+	function CurrencyConvert(base, req, amount) {
+		base = base.toUpperCase(); req = req.toUpperCase();
+
+		if (rates.error || !rates.hasOwnProperty(req) || rates == null)
+			return false;
+
+		return (amount * rates[req]).toFixed(2);
+
+	}
+
+	function is_valid(value, field) {
+		switch (field) {
+			case 'email':
+
+				let pattern = /\S+@\S+\.\S+/;
+				if (!value.match(pattern))
+					return  false;
+
+				break;
+			case 'amount':
+				value =  value.replace(',', '.');
+
+				if ( !(value * 1))
+					return  false;
+
+				if (value < 0.3) //min price
+					return  false;
+
+				break;
+			default:
+				return  false; //field not found
+				break;
 		}
 
-		function createInvoice() {
+		return true; //conditions was passed
+	}
+
+	function valid_fields() {
+
+		//console.log('start valid all fields');
+
+		//lock button firstly
+		disableButtonPay(true);
+
+		let fields = {
+			email: $('#email').val(),
+			amount: $('#amount').val()
+		};
+
+		//valid cur_field, and then if valid -> check other fields
+
+		for (var [field, value] of Object.entries(fields)) {
+
+			if (!is_valid(value, field))
+				return false; //walidate each field
+		}
+
+		//console.log('conditions passed');
+
+		//all conditions passed
+		disableButtonPay(false);
+		return true;
+
+
+	}
+
+	function disableButtonPay(is_disable) {
+		if (is_disable) {
 			$('#goPay').attr('disabled', true);
-
-			let amount = $('#amount').val();		
-			//data need to serealize
-			//create invoice and window.location uri open
-			//+ disable button (and enable after response)
-			let data = JSON.stringify({id_product: 1, ip: ip_address, price: $('#amount').val()  });
-		  	//send hint
-			$.post(service_uri, {'action': 'invoice.create', data: data}, function(response) {
-				$('#goPay').attr('disabled', false);
-				console.log('invoice.create response: ', response);
-				let status = JSON.parse(response);
-
-			  	if (status.ok == true) {
-			  		//new blank
-			  		let link = document.createElementNS("http://www.w3.org/1999/xhtml", "a");
-				    link.href = status.invoice;
-				    link.target = '_blank';
-				    link.click(); //emulate click
-
-				    //find invoice_id in link
-				    let decomposeLink = new URL(status.invoice);
-				    let invoice_id = decomposeLink.searchParams.get('billId');
-    
-			  		window.location.href = download_uri + '?invoice_id=' + invoice_id;
-			  	}
-			});
-
-
+			$('#goPay').find('.fa-heart').css('color', '#fff'); //primary color
+			$('#goPay').find('.fa-heart').removeClass('heart');
+			return;
 		}
 
-	</script>
+		$('#goPay').attr('disabled', false);
+		$('#goPay').find('.fa-heart').css('color', '#eb5e28'); //second color
+		$('#goPay').find('.fa-heart').addClass('heart');
+	}
+
+
+	function getRandomArbitrary(min, max) {
+	  return Math.random() * (max - min) + min;
+	}
+
+	function createInvoice() {
+
+
+		$('#goPay').attr('disabled', true);
+
+		let amount = $('#amount').val();
+
+		//data need to serealize
+		//create invoice and window.location uri open
+		//+ disable button (and enable after response)
+		let data = JSON.stringify({
+			id_product: $('#choiseProduct').val(),
+			ip: user.ip,
+			price: $('#amount').val(),
+			email: $('#email').val()
+		});
+		$.post(service_uri, {'action': 'invoice.create', data: data}, function(response) {
+			$('#goPay').attr('disabled', false);
+			console.log('invoice.create response: ', response);
+			let status = JSON.parse(response);
+
+			//open payment page
+		  	if (status.ok == true)
+		  		window.location.href = status.invoice;
+		});
+
+
+	}
+
+</script>
+
 </body>
+<footer class="bg-dark text-white text-center" style="position: absolute;
+    width: 100%;
+    bottom: 0;">
+	<a style="text-decoration: none; color: #fff" href="mailto:haveacess@gmail.com">Техническая поддержка</a>
+</footer>
 </html>
