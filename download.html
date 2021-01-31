@@ -16,28 +16,19 @@
 
 
 	<style type="text/css">
-
-		.background {
-			object-fit: cover;
-  			width: 100vw;
-  			height: 100vh;
-  			position: fixed;
-  			top: 0;
-  			left: 0;
-
-            background: #4c4c4c;
-		}
-
-		.form {
-			margin-top: 5%;
-
-
+		
+		body {
+		    background: url(https://images.pexels.com/photos/4449432/pexels-photo-4449432.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940);
 		}
 
 		.waitingPay {
-			padding: 2vw;
-		    height: 100vh;
-		    max-width: 500px;
+		    background: #171717a6;
+		    border: 2px solid;
+		    max-width: 750px;
+		    margin: auto;
+		    padding: 15px;
+		    margin-top: 3%;
+		    color: #fff;
 		    text-align: center;
 		}
 
@@ -48,12 +39,7 @@
 </head>
 <body>
 
-
-<video autoplay muted loop class="background">
-  <source src="bg.mp4" type="video/mp4">
-</video>
-
-<div class="waitingPay text-white mx-auto">
+<div class="waitingPay mx-auto">
 	  <div id="orderId" class="alert alert-warning mx-auto" role="alert" style="max-width: 500px;" data-template="Ваш номер заказа: %s"> 
 	  	
 	  </div>
