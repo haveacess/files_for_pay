@@ -27,7 +27,6 @@
 		    max-width: 750px;
 		    margin: auto;
 		    padding: 15px;
-		    margin-top: 3%;
 		    color: #fff;
 		    text-align: center;
 		}
@@ -43,14 +42,59 @@
 		    max-width: 750px;
 		}
 
-		
+		#timer {
+			text-align: center;
+			margin: auto;
+			background: #171717a6;
+			font-size: 32px;
+			max-width: 750px;
+			border-top: 2px dashed;
+			border-bottom: 2px dashed;
+			color: #fff;
 		}
+
+		.beep {
+			animation: beep 1s infinite;
+		}
+
+		@keyframes beep
+		{
+			0%
+			{
+				color: red;
+			}
+			50%
+			{
+				color: white;
+			}
+			100%
+			{
+				color: red;
+			}
+		}
+
+		.safeMode {
+			max-width: 750px;
+			margin: auto;
+			background: #fff;
+			padding: 30px;
+		}
+
 	</style>
 
 </head>
 <body>
 	
 <div id="orderId" class="" role="alert" data-template="Ваш номер заказа: %s">	  	
+</div>
+
+<div id="timer">
+	<strong>-:-:-</strong>
+</div>
+
+<div class="safeMode d-none">
+	<strong style="color: red">SOS</strong>. Пожалуйста, сохраняйте спокойствие. Если вы оплатили заказ, но так и не получили его - смело пишите нам на почту <strong class="text-dark">haveacess@gmail.com</strong> и укажите <strong>свой номер заказа.</strong>(указан выше)
+	Ответим в кратчайшие сроки.
 </div>
 
 <div class="waitingPay mx-auto">
@@ -60,12 +104,14 @@
 		  <strong>Проверяем вашу оплату. Как только заказ будет оплачен вы будете перенаправлены на страницу загрузки</strong>
 
 		  <div class="alert bg-light text-dark rounded-0" role="alert" style="margin-top: 5px">
-		  	Если в течении 3 минут после оплаты вы все еще видите эту надпись пожалуйста напишите нам на почту <strong class="text-dark">haveacess@gmail.com</strong> и укажите <strong>свой номер заказа.</strong> Как правило мы отвечаем в течении 24 часов
+		  	Если после 3 минут после оплаты вы все еще видите эту надпись пожалуйста напишите нам на почту <strong class="text-dark">haveacess@gmail.com</strong> и укажите <strong>свой номер заказа.</strong> Как правило мы отвечаем в течении 24 часов
 		  </div>
 	  </div>
 </div>
 
 <script type="text/javascript">
+
+	var timer_life = 3; //in seconds;
 
 	window.onload = function() {
 
@@ -102,6 +148,24 @@
 
 
 		}, 3000);
+
+		var timer = setInterval(function () {
+			timer_life -= 1;
+
+			if (timer_life == 0) {
+
+				clearInterval(timer);
+				$("#timer").addClass("beep");
+				$('.waitingPay').addClass('d-none');
+				$('.safeMode').removeClass('d-none');
+			}
+
+			let w = Math.trunc(timer_life/3600),
+					m = Math.trunc((timer_life - (w*3600))/60),
+					s = Math.trunc(timer_life - ((w * 3600) + (m * 60)));
+
+			$('#timer > strong').text(w + ':' + m + ':' + s);
+		}, 1000)
 
 	}
 
