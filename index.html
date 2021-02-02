@@ -37,7 +37,6 @@
 
 		.form {
 			background: #171717a6;
-			border: 2px solid;
 			max-width: 750px;
 			margin: auto;
 			padding: 15px;
@@ -124,7 +123,7 @@
 	<div class="form-group mx-auto">
 
 		<div class="alert text-dark rounded-0" role="alert" style="background: #fff;">
-		  Для скачивания этого файла необходимо внести мин. сумму (от 0.3$), а затем нажать кнопку "Перейти к оплате". Далее следуйте инструкциям, после оплаты Вы будете перенаправлены на страницу скачивания файла. Дополнительно ссылка на файл будет отправлена на вашу электронную почту.
+		  Для скачивания этого файла необходимо внести мин. сумму (от 0.1$), а затем нажать кнопку "Перейти к оплате". Далее следуйте инструкциям, после оплаты Вы будете перенаправлены на страницу скачивания файла. Дополнительно ссылка на файл будет отправлена на вашу электронную почту.
 		</div>
 
 		<div class="input-group" style="margin-bottom: 15px;">
@@ -142,7 +141,7 @@
 		<div class="input-group"  style="margin-bottom: 15px">
 			<label class="col-form-label w-25" style="margin-right: 5px;">Сумма</label>
 
-			<input type="text" class="form-control" name="amount" id="amount" placeholder="Число больше 0.3">
+			<input type="text" class="form-control" name="amount" id="amount" placeholder="Число больше 0.1" value="0.1">
 
 			<div class="input-group-append">
 			   <div class="input-group-text">$</div>
@@ -151,7 +150,7 @@
 			<button type="button" class="btn bg-dark text-white rounded-0" style="margin-left: 5px" id="rnd">RANDOM</button>
 
 			 <div class="invalid-feedback" style="color: #fdd1d1">
-			  Пожалуйста введите число больше 0.3
+			  Пожалуйста введите число больше 0.1
 			 </div>
 
 			<div class="w-100">
@@ -256,32 +255,23 @@
 
 		}, 300);
 
-		//get ip and set in variable
-
-		$.get("https://api.ipify.org/?format=json", function(response) {
-				user.ip = response.ip;
-
-		});
-
 		//get rates
 		$.get("https://api.exchangeratesapi.io/latest?base=USD", function(response) {
 			rates = response.rates;
+
+			$.get("https://filesforpay.space/detect_user.php", function(response) {
+
+				let parsed_info = JSON.parse(response);
+
+				if (parsed_info['ok'] == true) {
+					user.ip = parsed_info['info']['ip'];
+					user.country = parsed_info['info']['country'];
+					user.currency = parsed_info['info']['currency'];
+				}
+
+			});
+
 		});
-
-		//get country
-		$.get("http://ip-api.com/json/", function(response) {
-			if (response.status == 'success') {
-
-				user.country = response.country;
-
-				$.get("https://restcountries.eu/rest/v2/name/" + user.country, function(response) {
-					user.currency = response[0].currencies[0].code;
-				});
-			}
-
-
-		});
-
 
 		
 	}
@@ -309,12 +299,8 @@
 		let amount = $('#amount').val(); //get amount from field;
 		amount = amount.replace(',', '.');
 
-		if (!user.country)
+		if (!user.country || !user.currency)
 			return  false;
-
-
-		if (!user.currency)  //error convertation return
-			return false;
 
 		let amountConverted = CurrencyConvert('USD', user.currency, amount);
 
@@ -358,7 +344,7 @@
 				if ( !(value * 1))
 					return  false;
 
-				if (value < 0.3) //min price
+				if (value < 0.1) //min price
 					return  false;
 
 				break;
